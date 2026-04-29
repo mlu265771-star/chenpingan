@@ -2,15 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>号码在库查询系统</title>
+    <title>号码查询系统</title>
     <style>
-        /* 简单的页面美化 */
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding-top: 50px; background: #f4f7f6; }
-        .search-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        input { padding: 10px; width: 200px; border: 1px solid #ddd; border-radius: 4px; outline: none; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 5px; }
+        .search-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        input { padding: 10px; width: 220px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-size: 16px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 5px; font-size: 16px; }
         button:hover { background: #0056b3; }
-        .result { margin-top: 20px; padding: 15px; border-radius: 4px; display: none; text-align: center; font-weight: bold; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 4px; display: none; font-weight: bold; line-height: 1.5; }
         .ok { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .no { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
@@ -25,30 +24,29 @@
     </div>
 
 <script>
-    // 1. 这里存放你的号码数据库
-    // 建议：每个号码用引号包裹，中间用逗号隔开
+    // 1. 这里是您的数据库，您可以继续往里面添加号码
     const database = [
-       "13800000001","13800000002","13800000003","13800000004","13800000005","13800000006","13800000007","13800000008","13800000009","13800000010","13800000011","13800000012","13800000013","13800000014","13800000015","13800000016","13800000017","13800000018","13800000019","13800000020","13800000021","13800000022","13800000023","13800000024","13800000025","13800000026","13800000027","13800000028","13800000029","13800000030","13800000031","13800000032","13800000033","13800000034","13800000035","13800000036","13800000037","13800000038","13800000039","13800000040","13800000041","13800000042","13800000043","13800000044","13800000045","13800000046","13800000047","13800000048","13800000049","13800000050","13800000051","13800000052","13800000053","13800000054","13800000055","13800000056","13800000057","13800000058","13800000059","13800000060","13800000061","13800000062","13800000063","13800000064","13800000065","13800000066","13800000067","13800000068","13800000069","13800000070","13800000071","13800000072","13800000073","13800000074","13800000075","13800000076","13800000077","13800000078","13800000079","13800000080","13800000081","13800000082","13800000083","13800000084","13800000085","13800000086","13800000087","13800000088","13800000089","13800000090","13800000091","13800000092","13800000093","13800000094","13800000095","13800000096","13800000097","13800000098","13800000099","13800000100"
-        // 你可以继续往下粘贴更多号码...
+        "13800000001", "13800000002", "13800000003", "13800000004", 
+        "13800000005", "13800000006", "13800000007", "13800000008", 
+        "13800000009", "13800000010", "13800000011", "13800000100"
     ];
 
-    // 2. 查询逻辑函数
+    // 2. 查询逻辑
     function checkPhone() {
         const input = document.getElementById('phoneInput').value.trim();
         const resultBox = document.getElementById('resultBox');
 
-        // 如果输入为空
         if (input === "") {
             alert("请输入号码！");
             return;
         }
 
-        // 显示结果框
         resultBox.style.display = "block";
 
-        // 判断是否存在于数组中
+        // 使用 includes 检查号码是否存在
         if (database.includes(input)) {
             resultBox.className = "result ok";
+            // 注意：这里使用的是反引号 `
             resultBox.innerHTML = `号码 ${input} <br> ✅ 在库中`;
         } else {
             resultBox.className = "result no";
@@ -56,17 +54,13 @@
         }
     }
 
-    // 允许按回车键查询
+    // 允许按回车键触发查询
     document.getElementById('phoneInput').addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             checkPhone();
         }
     });
 </script>
-
-</body>
-</html>
-
 
 </body>
 </html>
