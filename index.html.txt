@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>手机号状态查询</title>
+    <style>
+        /* 这里的 CSS 就是你之前提供并美化过的样式 */
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        h2 { color: #333; margin-bottom: 1.5rem; }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        button {
+            background-color: #5c67f2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #4a54e1; }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 10px;
+            border-radius: 4px;
+            display: none; /* 默认隐藏 */
+        }
+
+        .ok { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .no { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>手机号查询系统</h2>
+    <input type="text" id="phoneInput" placeholder="请输入手机号">
+    <br>
+    <button onclick="checkPhone()">点击查询</button>
+
+    <!-- 结果显示区域 -->
+    <div id="resultBox" class="result"></div>
+</div>
+
+<script>
+    // 模拟数据库：这里存放你想要“在库”的号码
+    const database = ["19183521762", "13800138000", "15900000000"];
+
+    function checkPhone() {
+        const input = document.getElementById('phoneInput').value.trim();
+        const resultBox = document.getElementById('resultBox');
+
+        if (input === "") {
+            alert("请输入号码！");
+            return;
+        }
+
+        resultBox.style.display = "block";
+
+        // 判断逻辑
+        if (database.includes(input)) {
+            resultBox.className = "result ok";
+            resultBox.innerHTML = `号码 ${input} <br> <b>在库 ✅</b>`;
+        } else {
+            resultBox.className = "result no";
+            resultBox.innerHTML = `号码 ${input} <br> <b>未找到 ❌</b>`;
+        }
+    }
+</script>
+
+</body>
+</html>
