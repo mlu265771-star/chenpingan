@@ -1,42 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>号码查询系统 - 测试版</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex; justify-content: center; align-items: flex-start; 
+            min-height: 100vh; margin: 0; padding-top: 100px;
+            background-color: #f3f4f7;
+            background-image: radial-gradient(at 0% 0%, rgba(161, 196, 253, 0.3) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(194, 233, 251, 0.3) 0, transparent 50%);
+        }
+        .search-container { 
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center; width: 400px;
+        }
+        .input-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; outline: none; font-size: 16px; }
+        input:focus { border-color: #007bff; }
+        button { padding: 12px 20px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 10px; display: none; font-size: 15px; }
+        .ok { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .no { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="search-container">
+    <h2>号码查询系统</h2>
+    <div class="input-row">
+        <input type="tel" id="phoneInput" placeholder="请输入11位手机号" maxlength="11">
+        <button onclick="checkPhone()">查询</button>
+    </div>
+    <div id="resultBox" class="result"></div>
+</div>
+
 <script>
-    /**
-     * 1. 粘贴号码
-     */
+    // 100个模拟号码（前三个是上面列出的测试号）
     const rawData = `
-        在这里粘贴上面的100个号码...
+        15006346243, 13859540044, 15821533365, 13940471572, 17754878642, 15015356042, 15036183119, 19980546693, 
+        13388252904, 13137131256, 13132126745, 17764532889, 13599217569, 13312549269, 15045115470, 17719074199, 
+        15821243699, 15877268929, 15862056164, 13385286017, 13306143701, 15055373990, 15022468318, 13994252542, 
+        18602694724, 13853675148, 15008760205, 13533317458, 15006609598, 13555665633, 13956937535, 13860722456, 
+        15058695490, 18648844246, 15040802079, 18647951684, 13878034196, 13319655831, 13340707891, 13872844115, 
+        13589063091, 13939591982, 18680109456, 13924725156, 17759713231, 13817139822, 13943326304, 13918784785, 
+        17798383942, 15814013322, 13815404400, 15815604309, 17711924123, 13367440741, 15895576724, 19998271201, 
+        18695976639, 17795550492, 13894011223, 13501825336, 18698801115, 13998078848, 13328216028, 13931501520, 
+        13503661359, 13829761970, 17750463410, 19995349335, 19906737421, 13568631650, 13391949421, 13174910628, 
+        18640812057, 13894529439, 13182601494, 15844943133, 13576396897, 19963720038, 13885533724, 17770758150, 
+        13993763209, 15025409691, 13151648565, 15057306512, 13144651211, 13130254401, 13153840179, 13900069982, 
+        13132779958, 19980190240, 18634661186, 13510501428, 15831094691, 15059913765, 17728369729, 15877547462, 
+        18625646058, 15853102043, 18655874877, 19946805167
     `;
 
-    // 优化：自动清洗数据。移除逗号、处理空格和换行，并使用 Set 去重提高查询效率
-    const database = new Set(
-        rawData.replace(/,/g, ' ') // 把逗号换成空格
-               .trim()
-               .split(/\s+/)        // 按空格/换行拆分
-    );
+    // 数据清洗并存入 Set（Set 查询速度比 Array 快很多）
+    const database = new Set(rawData.replace(/,/g, ' ').trim().split(/\s+/));
 
     function checkPhone() {
-        const inputField = document.getElementById('phoneInput');
-        const input = inputField.value.trim();
+        const input = document.getElementById('phoneInput').value.trim();
         const resultBox = document.getElementById('resultBox');
 
-        // 校验输入格式（简单的11位数字校验）
         if (!/^\d{11}$/.test(input)) {
-            alert("请输入正确的11位手机号码");
+            alert("请输入11位数字手机号");
             return;
         }
 
         resultBox.style.display = "block";
-
-        // 使用 Set.has() 查询速度极快
         if (database.has(input)) {
             resultBox.className = "result ok";
-            resultBox.innerHTML = `<span class="phone-display">查询号码：${input}</span>✅ 该号码已在白名单库中`;
+            resultBox.innerHTML = `✅ 号码 ${input} 在白名单中`;
         } else {
             resultBox.className = "result no";
-            resultBox.innerHTML = `<span class="phone-display">查询号码：${input}</span>❌ 该号码不在库中，请核对`;
+            resultBox.innerHTML = `❌ 号码 ${input} 未找到`;
         }
     }
 
+    // 监听回车
     document.getElementById('phoneInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') checkPhone();
     });
 </script>
+
+</body>
+</html>
